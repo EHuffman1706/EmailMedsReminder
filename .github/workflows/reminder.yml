@@ -1,0 +1,22 @@
+name: Medication Reminder
+
+on:
+  schedule:
+    - cron: "0 16 * * *"  # 11:00 AM Central
+    - cron: "0 22 * * *"  # 5:00 PM Central
+    - cron: "0 3 * * *"   # 10:00 PM Central (03:00 UTC next day)
+  workflow_dispatch:
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: python MedsReminder.py
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          RECIPIENT: ${{ secrets.RECIPIENT }}
