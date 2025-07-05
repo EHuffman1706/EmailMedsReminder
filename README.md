@@ -1,0 +1,1 @@
+This is a way to send automated scheduled medication reminders via GitHub actions and a python script  this is a way to send automated scheduled medication reminders via GitHub actions and a python script.
