@@ -63,5 +63,12 @@ Stay safe – don’t forget the medication!"""
 
 ctx = ssl.create_default_context()
 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as smtp:
+# --- who gets the email ------------------------------------------------------
+recipients = [addr.strip() for addr in os.environ["RECIPIENTS"].split(",")]
+
+msg["To"] = ", ".join(recipients)        # visible list in header
+
+# --- send it -----------------------------------------------------------------
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as smtp:
     smtp.login(os.environ["SMTP_USER"], os.environ["SMTP_PASS"])
-    smtp.send_message(msg)
+    smtp.send_message(msg, to_addrs=recipients)
