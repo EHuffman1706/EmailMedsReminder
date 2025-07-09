@@ -1,22 +1,33 @@
 name: Medication Reminder
 
 on:
-  schedule:
-    - cron: "0 16 * * *"  # 11:00 AM Central
-    - cron: "0 22 * * *"  # 5:00 PM Central
-    - cron: "0 3 * * *"   # 10:00 PM Central (03:00 UTC next day)
+  # Manual trigger
   workflow_dispatch:
+  # Scheduled runs (Central Time → UTC)
+  schedule:
+    - cron: "0 14 * * *"  # 9:00  AM Central (14:00 UTC)
+    - cron: "0 18 * * *"  # 1:00  PM Central (18:00 UTC)
+    - cron: "0 21 * * *"  # 4:00  PM Central (21:00 UTC)
+    - cron: "0 2  * * *"  # 9:00  PM Central (02:00 UTC next day)
 
 jobs:
-  send_email:
+  send:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      # Check out your repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Set up a recent Python (needs zoneinfo)
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
-      - run: python MedsReminder.py
+          python-version: "3.11"
+
+      # Run the reminder script
+      - name: Send reminder
+        run: python MedsReminder.py
         env:
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-RECIPIENTS: ${{ secrets.RECIPIENTS }}
+          SMTP_USER:  ${{ secrets.SMTP_USER }}
+          SMTP_PASS:  ${{ secrets.SMTP_PASS }}
+          RECIPIENTS: ${{ secrets.RECIPIENTS }}
