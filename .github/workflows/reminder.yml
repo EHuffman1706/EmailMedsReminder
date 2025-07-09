@@ -19,4 +19,4 @@ jobs:
         env:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          RECIPIENT: ${{ secrets.RECIPIENT }}
+RECIPIENTS: ${{ secrets.RECIPIENTS }}
